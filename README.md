@@ -1,7 +1,10 @@
 # Timezone Clock
 Timezone Clock is a website setup for dual timezone clock with weather informations.
-> **Please run setup.sh once with appid being {{OPENWEATHERMAP_APPID}} before submitting a pull request to protect your API key**
+> **Please run setup.sh once with appid of {{OPENWEATHERMAP_APPID}} or run "git restore scripts/apiproxy.php" in terminal before submitting a pull request to protect your API key**
 
+#### Screenshots
+![Example Screenshot](screenshot.png "Main Screen")
+![Example Menu Screenshot](screenshot-menu.png "Menu Options")
 ### Features:
 - Compatible to legacy browsers;
 - Scaled UI with browser window's size;
