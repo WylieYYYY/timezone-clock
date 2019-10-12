@@ -1,0 +1,13 @@
+{
+	"name": "Timezone Clock",
+	"short_name": "Clock",
+	"icons": [{
+		"src": "styles/images/favicon.png",
+		"size": "512x512",
+		"type": "image/png"
+	}],
+	"start_url": "index.html",
+	"background_color": "#353535",
+	"display": "fullscreen",
+	"theme_color": "#353535"
+}

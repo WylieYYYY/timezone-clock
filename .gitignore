@@ -1,0 +1,3 @@
+*.swp
+scripts/*.json
+scripts/apiproxy.php

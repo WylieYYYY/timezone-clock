@@ -1,0 +1,30 @@
+.jshide { display: none; }
+.highlight {
+	font-weight: bold;
+	font-style: italic;
+}
+.split40 { width: 40%; }
+.split60 { width: 60%; }
+.warn {
+	font-size: 200%;
+	color: yellow;
+}
+.padded { margin: 10px; }
+.popupblur {
+	display: none;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: grey;
+	opacity: 0.5;
+}
+body, .background {
+	/* Background pattern from Toptal Subtle Patterns */
+	background-image: url("images/prism.png");
+	background-color: black;
+	font-family: Share Tech Mono;
+}
+div, p { float: left; }
+h1, h2, h3, h4, h5, h6, i, p { margin: 0 0 0 0; }
