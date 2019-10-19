@@ -13,6 +13,7 @@ Timezone Clock is a website setup for dual timezone clock with weather informati
 
 ### Setup
 The website can be hosted on a PHP server (detects .html and .php as PHP files) or used on client side (private use only as there is no API key protection), it is compatible and will auto detect how it is used.  
+Not all browsers support client side because of CORS policy (such as Firefox) but can still be hosted locally and used.  
 Use *setup.sh* to setup. **For bash and apache on linux.**
 > Modification will be needed for other shells, server hosting programs or operating systems.
 
