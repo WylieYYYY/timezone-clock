@@ -20,7 +20,17 @@ exceeded and causes error.
 Use *setup.sh* to setup. **For Bash and Apache on Linux.**
 > Modification will be needed for other shells, server hosting programs or operating systems.
 
-> Summary of the script, variables are in square brackets:
+Server should be pointing to the parent directory and index.html
+Remove the following files before starting a public server:
+- .git
+- .gitignore
+- README.md
+- screenshot.png
+- screenshot-menu.png
+- setup.sh
+
+#### Setup script summary
+For for other shells, server hosting programs or operating systems, here is a summary of the setup script, variables are in square brackets:
 1. Read in user's appid
 2. If no appid is supplied, use `{{OPENWEATHERMAP_APPID}}` as user's appid
 3. Replace all occurence of `target_key = "&units=metric&appid=[wildcard match anything]";` with `target_key = "\&units=metric\&appid={{OPENWEATHERMAP_APPID}}";` in `scripts/apiproxy.php`
@@ -31,13 +41,3 @@ Use *setup.sh* to setup. **For Bash and Apache on Linux.**
 8. Detect the user group of web server (For Apache on Linux, it is `http` by default and found after `Group` keyword in `/etc/httpd/conf/httpd.conf`)
 9. Change owner to `[self username]:[web server group]` for all items in the repository directory and parent directories up to the one before root (For example, `wylie` in default Linux Apache environment with repository of path `/home/repos/timezone-clock`; `repos`, `timezone-clock` and everything in `timezone-clock` will have the owner of `wylie:http`)
 10. Change the permission of the repository directory and parent directories up to the one before root to `775 (drwxrwxr-x)`
-
-Server should be pointing to the parent directory and index.html
-Remove the following files before starting a public server:
-- .git
-- .gitignore
-- README.md
-- screenshot.png
-- screenshot-menu.png
-- setup.sh
-
