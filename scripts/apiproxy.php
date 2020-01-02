@@ -10,7 +10,7 @@ function getweather(a, b) {
 }
 function getregionweather(region, next) {
 	var target_base = "https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/data/2.5/";
-	var target_key = "&units=metric&appid=6b46e1ad63781b1bb3463cb05da6d87e";
+	var target_key = "&units=metric&appid={{OPENWEATHERMAP_APPID}}";
 	[ "weather", "forecast" ].forEach(function(type) {
 		request[region + type] = new XMLHttpRequest();
 		request[region + type].onreadystatechange = function() { processraw(region, type, next); };
@@ -40,7 +40,7 @@ async function processraw(region, type, next) {
 }/*/
 header('Content-Type: application/javascript');
 $target_base = "http://api.openweathermap.org/data/2.5/";
-$target_key = "&units=metric&appid=6b46e1ad63781b1bb3463cb05da6d87e";
+$target_key = "&units=metric&appid={{OPENWEATHERMAP_APPID}}";
 foreach (array('a', 'b') as $region) {
 	$all_req = glob("*.json");
 	foreach ($all_req as $cache) {

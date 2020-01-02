@@ -33,7 +33,7 @@ Remove the following files before starting a public server:
 For for other shells, server hosting programs or operating systems, here is a summary of the setup script, variables are in square brackets:
 1. Read in user's appid
 2. If no appid is supplied, use `{{OPENWEATHERMAP_APPID}}` as user's appid
-3. Replace all occurence of `target_key = "&units=metric&appid=[wildcard match anything]";` with `target_key = "\&units=metric\&appid={{OPENWEATHERMAP_APPID}}";` in `scripts/apiproxy.php`
+3. Replace all occurence of `target_key = "&units=metric&appid=[wildcard match anything]";` with `target_key = "&units=metric&appid={{OPENWEATHERMAP_APPID}}";` in `scripts/apiproxy.php`
 4. Replace all occurence of `{{OPENWEATHERMAP_APPID}}` in `scripts/apiproxy.php` with user's appid
 5. Remove all JSON files from the `scripts` folder
 6. Change all files' permission to `664 (-rw-rw-r--)`, directories' permission to `775 (drwxrwxr-x)` (See [Wikipedia](https://en.wikipedia.org/wiki/File_system_permissions#Traditional_Unix_permissions) for notation explanation)
