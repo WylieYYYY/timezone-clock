@@ -77,13 +77,13 @@ function displayweather() {
 			document.getElementById(region + "weather").setAttribute("class", "owf owf-"
 				+ apijson[region]["weather"]["weather"][0]["id"] + (daytime ? "-d" : "-n"));
 			var tempstr = Math.round(apijson[region]["weather"]["main"]["temp"]).toString();
-			document.getElementById(region + "temp").textContent = tempstr
+			document.getElementById(region + "temp").textContent = '\xa0' + (tempstr.length < 3 ? '\xa0' : '') + tempstr
 				+ (tempstr.length < 2 ? '\xa0' : '') + "\xb0\x43";
 			var templow = Math.round(apijson[region]["weather"]["main"]["temp_min"]).toString();
 			var temphi = Math.round(apijson[region]["weather"]["main"]["temp_max"]).toString();
 			document.getElementById(region + "hilow").textContent = templow +
 				(templow == temphi ? (templow.length < 2 ? '\xa0' : '') :
-				'-' + (temphi.length < 2 ? '\xa0' : '') + temphi) + "\xb0\x43";
+				(templow.length < 2 ? '\xa0' : '') + '-' + (temphi.length < 2 ? '\xa0' : '') + temphi) + "\xb0\x43";
 			var roughtz = Math.round(apijson[region]["weather"]["timezone"] / 10800) * 10800 - 32400;
 			for (var firstfc = 0; (apijson[region]["forecast"]["list"][firstfc]["dt"] + roughtz) % 86400 != 0; firstfc++);
 			for (var i = 0; firstfc + i * 8 < 40; i++) {
