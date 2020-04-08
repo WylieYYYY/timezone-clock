@@ -29,11 +29,14 @@ function showlocpopup() {
 	show("locformblur");
 }
 function changeweather() {
-	window.aloc = document.getElementById("aloc").value;
-	window.bloc = document.getElementById("bloc").value;
-	localStorage.setItem("aloc", aloc);
-	localStorage.setItem("bloc", bloc);
-	localStorage.setItem("contrast", document.getElementById("contrast").checked.toString());
+	window.aloc = document.getElementById("alocinput").value;
+	window.bloc = document.getElementById("blocinput").value;
+	try {
+		localStorage.setItem("aloc", aloc);
+		localStorage.setItem("bloc", bloc);
+		localStorage.setItem("contrast", document.getElementById("contrast")
+				.checked.toString());
+	} catch (e) {}
 	document.getElementById("s").textContent = "";
 	refreshweather();
 	hide("locform");

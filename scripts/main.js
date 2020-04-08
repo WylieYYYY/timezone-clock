@@ -1,13 +1,16 @@
 "use strict";
 
 function init() {
-	window.aloc = localStorage.getItem("aloc");
-	window.bloc = localStorage.getItem("bloc");
-	aloc = aloc == null ? "Hong Kong" : aloc;
-	bloc = bloc == null ? "London" : bloc;
-	document.getElementById("aloc").value = aloc;
-	document.getElementById("bloc").value = bloc;
-	document.getElementById("contrast").checked = localStorage.getItem("contrast") == "true";
+	try {
+		window.aloc = localStorage.getItem("aloc");
+		window.bloc = localStorage.getItem("bloc");
+		document.getElementById("contrast").checked
+			= localStorage.getItem("contrast") == "true";
+	} catch (e) {}
+	window.aloc = window.aloc == null ? "Hong Kong" : aloc;
+	window.bloc = window.bloc == null ? "London" : bloc;
+	document.getElementById("alocinput").value = aloc;
+	document.getElementById("blocinput").value = bloc;
 	window.apijson = null;
 	window.fctime = 21;
 	window.fc = { 'a': new Array(5), 'b': new Array(5) };
