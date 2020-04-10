@@ -12,9 +12,9 @@ Timezone Clock is a website setup for dual timezone clock with weather informati
 - Can be used with a free subscription of OpenWeatherMap;
 
 ### Setup
-The website can be hosted on a PHP server (detects .html and .php as PHP files) or used on client side (private use only as there is no appid protection), it is compatible and will auto detect how it is used.  
-Not all browsers allow client side because of CORS policy (such as Firefox) but can still be hosted locally and used. Also, there is no rate limit on client side, request limit imposed by OpenWeatherMap may be
-exceeded and causes error.  
+The website can be hosted on a PHP server (detects .html and .php as PHP files) or used on client side (private use only as there is no appid protection), it is compatible and will auto detect how it is used.
+However, there is no rate limit on client side, request limit imposed by OpenWeatherMap may be
+exceeded and causes error, but as long as you limit the times you refresh or change location, client side will be fine.  
 > Hosting locally with a PHP server is encouraged where possible due to above reasons.
 
 Use *setup.sh* to setup. **For Bash and Apache on Linux.**

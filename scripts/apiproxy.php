@@ -21,10 +21,11 @@ function getregionweather(region, next) {
 			displayweather();
 		};
 		request[region + type].open("GET", target_base + type + "?q=" + region + target_key, true);
+		request[region + type].setRequestHeader("X-Requested-With", "XMLHttpRequest");
 		request[region + type].send();
 	});
 }
-async function processraw(region, type, next) {
+function processraw(region, type, next) {
 	if (apijson == "<offline>") return;
 	if (request[region + type].readyState == 4 && request[region + type].status == 200) {
 		response += '"' + type + "\":" + request[region + type].responseText + (++received % 2 == 0 ? '}' : ',');
