@@ -22,6 +22,7 @@ function init() {
 	window.fc = { 'a': new Array(5), 'b': new Array(5) };
 	window.fcdate = { 'a': new Array(5), 'b': new Array(5) };
 	window.fchilow = { 'a': new Array(5), 'b': new Array(5) };
+	window.timeoutpid = 0;
 	
 	[].forEach.call(document.getElementsByClassName("jshide"), function(element) {
 		element.style.display = "block";
@@ -35,8 +36,8 @@ function main() {
 	// use internal timeout to reduce sync performance load
 	setTimeout(main, 1000);
 	// all updates will halt when apijson is not a JSON object
-	// fchilow['b'][4] is a string when it is not updating
-	if (typeof apijson == "object" && typeof fchilow['b'][4] == "string") {
+	// if updating, timeoutpid will be a timeout PID (positive integer)
+	if (typeof apijson == "object" && timeoutpid == 0) {
 		show("fc");
 		show("ainfo");
 		show("binfo");
@@ -73,7 +74,7 @@ function main() {
 		return;
 	}
 	
-	if (typeof apijson == "object" && typeof fchilow['b'][4] == "string") {
+	if (typeof apijson == "object" && timeoutpid == 0) {
 		// add timezone seconds to epoch time and convert to time format
 		var atoday = moment().add(apijson['a']["weather"]["timezone"], 's').utc();
 		var btoday = moment().add(apijson['b']["weather"]["timezone"], 's').utc();
@@ -88,7 +89,7 @@ function main() {
 		};
 
 		// request for weather every 5 minutes
-		if (atoday.minute() % 5 == 0) refreshweather();
+		if (atoday.minute() % 5 == 0) refreshweather(false);
 		// three-way comparison to determine pad direction
 		var lendiff = target["adate"].length - target["bdate"].length;
 		target["adate"] = target["adate"].replace("\x1d", repeatStr("\xa0", lendiff < 0 ? -lendiff + 1 : 1));

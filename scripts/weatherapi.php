@@ -32,8 +32,8 @@ function showlocpopup() {
 	show("locformblur");
 }
 function changeweather() {
-	// if previous request is not finished, it's type will be a timeout PID (integer)
-	if (typeof fchilow['b'][4] == "number") {
+	// if previous request is not finished, it will be a timeout PID (positive integer)
+	if (timeoutpid != 0) {
 		document.getElementById("availtitle").innerHTML = "<br/>Please wait<br/>until last request<br/>is finished.";
 		show("availtitle");
 		return;
@@ -49,29 +49,34 @@ function changeweather() {
 	}
 	// set second to nothing, triggers main function to sync time with apijson
 	document.getElementById("s").textContent = "";
-	refreshweather();
+	refreshweather(true);
 	hide("locform");
 	hide("locformblur");
 }
 
-function refreshweather() {
+function refreshweather(loc_changed) {
 	// default to CSS value when it is an empty string, empty URL for no background image
 	if (!document.getElementById("contrast").checked) document.body.style.backgroundImage = "";
 	else document.body.style.backgroundImage = "url()";
-	window.apijson = "";
-	window.fchilow['b'][4] = setTimeout(function() {
+	window.timeoutpid = setTimeout(function() {
 		window.apijson = "<offline>";
 		displayweather();
 	}, 10000);
 	// Server-client compatible code<?php /*
 	getweather(aloc, bloc);/*/ echo "\n"?>
+	// if location changed, we must notify the user
+	if (loc_changed) window.apijson = "";
 	var request = new XMLHttpRequest();
 	request.onreadystatechange = function() {
 		if (request.readyState == 4 && request.status == 200) {
 			// skip "// Server-client compatible code" indicator
-			window.apijson = request.responseText.substring(32);
+			var response = request.responseText.substring(32);
+			if (response == "<server_fault>") displayweather(true);
 			// else it may be empty or available locations
-			displayweather();
+			else {
+				window.apijson = response;
+				displayweather(false);
+			}
 		}
 	};
 	request.onerror = function() {
@@ -83,10 +88,11 @@ function refreshweather() {
 	request.send();//*/
 }
 
-function displayweather() {
+function displayweather(server_fault) {
 	// remove offline message timeout, responses start with curly bracket is valid JSON
-	clearTimeout(fchilow['b'][4]);
-	if (apijson && apijson.charAt(0) == '{') {
+	clearTimeout(timeoutpid);
+	if (typeof apijson == "string" && apijson.charAt(0) == '{') {
+		document.getElementById("fctime").style.backgroundColor = "lawngreen";
 		window.apijson = JSON.parse(apijson);
 		[ 'a', 'b' ].forEach(function(region) {
 			// calculate daytime to change icon style
@@ -104,7 +110,7 @@ function displayweather() {
 			// pad each side, remove one side if equal
 			document.getElementById(region + "hilow").textContent = templow +
 				(templow == temphi ? (templow.length < 2 ? '\xa0' : '') :
-				(templow.length < 2 ? '\xa0' : '') + '-' + (temphi.length < 2 ? '\xa0' : '') + temphi) + "\xb0\x43";
+				(templow.length < 2 ? '\xa0' : '') + '/' + (temphi.length < 2 ? '\xa0' : '') + temphi) + "\xb0\x43";
 			// round timezone by 3 hour interval (10800s), offset to 9AM (32400s)
 			var roughtz = Math.round(apijson[region]["weather"]["timezone"] / 10800) * 10800 - 32400;
 			// skip entries until next epoch day (86400s) in the entry thus next 9AM in the timezone
@@ -116,8 +122,13 @@ function displayweather() {
 					.add(apijson[region]["weather"]["timezone"], 's').utc().format("dd");
 				templow = Math.round(apijson[region]["forecast"]["list"][firstfc + i * 8]["main"]["temp_min"]);
 				temphi = Math.round(apijson[region]["forecast"]["list"][firstfc + i * 8]["main"]["temp_max"]);
-				fchilow[region][i] = templow + (templow == temphi ? '' : '-' + temphi) + "\xb0";
+				fchilow[region][i] = templow + (templow == temphi ? '' : '/' + temphi) + "\xb0";
 			}
+		});
+	} else if (server_fault && typeof apijson == "object") {
+		document.getElementById("fctime").style.backgroundColor = "yellow";
+		[ 'a', 'b' ].forEach(function(region) {
+			document.getElementById(region + "temp").textContent = "\xa0\xa0--\xb0\x43";
 		});
 	} else {
 		// in a failed state, click off is assumed to be confirm
@@ -132,13 +143,16 @@ function displayweather() {
 			document.getElementById("availtitle").innerHTML = "<br/>Server busy,<br/>currently available regions:";
 			document.getElementById("availloc").innerHTML = "<br/>" + apijson;
 			show("availloc");
+		} else if (server_fault) {
+			// first time enter or loc changed but server faulted
+			document.getElementById("availtitle").innerHTML = "<br/>Server fault,<br/>contact administrator.";
 		}
 		// empty response, request to OpenWeatherMap failed, incorrect parameters
 		else document.getElementById("availtitle").innerHTML = "<br/>Location unavailable,<br/>please check the city you inputted.";
 		show("availtitle");
 		show("locform");
 		show("locformblur");
-		// reset fchilow['b'][4] to a string to signify request allowed
-		fchilow['b'][4] = "";
 	}
+	// request is allowed again
+	window.timeoutpid = 0;
 }

@@ -2,6 +2,7 @@
 "use strict";
 
 function getweather(a, b) {
+	window.apijson = "";
 	window.received = 0;
 	// array to contain all requests
 	window.request = {};
@@ -46,8 +47,15 @@ function processraw(region, type, next) {
 	}
 }/*/
 header('Content-Type: application/javascript');
-$target_base = "http://api.openweathermap.org/data/2.5/";
+$target_base = "https://api.openweathermap.org/data/2.5/";
 $target_key = "&units=metric&appid={{OPENWEATHERMAP_APPID}}";
+// test online status
+ini_set('default_socket_timeout', 2);
+$response = file_get_contents("https://example.com");
+if (!$response) {
+	echo "<server_fault>";
+	return;
+}
 foreach (array('a', 'b') as $region) {
 	$all_req = glob("*.json");
 	// remove all JSON older than 10.5 minutes (630s)
