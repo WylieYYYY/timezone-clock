@@ -77,6 +77,9 @@ function refreshweather(loc_changed) {
 				window.apijson = response;
 				displayweather(false);
 			}
+		} else if (request.status >= 400) {
+			window.apijson = "<offline>";
+			displayweather(false);
 		}
 	};
 	request.onerror = function() {
