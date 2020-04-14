@@ -61,7 +61,7 @@ function refreshweather(loc_changed) {
 	window.timeoutpid = setTimeout(function() {
 		window.apijson = "<offline>";
 		displayweather();
-	}, 10000);
+	}, 15000);
 	// Server-client compatible code<?php /*
 	getweather(aloc, bloc);/*/ echo "\n"?>
 	// if location changed, we must notify the user
@@ -77,14 +77,14 @@ function refreshweather(loc_changed) {
 				window.apijson = response;
 				displayweather(false);
 			}
-		} else if (request.status >= 400) {
+		} else if (request.readyState == 4 && request.status >= 400) {
 			window.apijson = "<offline>";
 			displayweather(false);
 		}
 	};
 	request.onerror = function() {
 		window.apijson = "<offline>";
-		displayweather();
+		displayweather(false);
 	};
 	// parameter r to force request instead of using cached file
 	request.open("GET", "scripts/apiproxy.php?a=" + aloc + "&b=" + bloc + "&r=" + moment().utc(), true);
@@ -129,6 +129,7 @@ function displayweather(server_fault) {
 			}
 		});
 	} else if (server_fault && typeof apijson == "object") {
+		// is JSON object, server/client has no connection to Internet and not first time
 		document.getElementById("fctime").style.backgroundColor = "yellow";
 		[ 'a', 'b' ].forEach(function(region) {
 			document.getElementById(region + "temp").textContent = "\xa0\xa0--\xb0\x43";
@@ -138,7 +139,8 @@ function displayweather(server_fault) {
 		document.getElementById("locformblur").onclick = function() { changeweather(); };
 		document.getElementById("loctitle").textContent = "Try Again";
 		// offline message timeout reached, retry every minute
-		if (apijson == "<offline>") {
+		if (apijson == "<offline>" || (server_fault && !hosted)) {
+			// can also be client offline on the first time
 			document.getElementById("availtitle").innerHTML = "<br/>Offline,<br/>check connection.";
 			setTimeout(changeweather, 60000);
 		} else if (apijson) {

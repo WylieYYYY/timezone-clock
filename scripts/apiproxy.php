@@ -2,8 +2,6 @@
 "use strict";
 
 function getweather(a, b) {
-	// non-empty string to avoid location not found trigger
-	window.apijson = "init";
 	window.received = 0;
 	// array to contain all requests
 	window.request = {};
@@ -11,17 +9,16 @@ function getweather(a, b) {
 	window.response = "{\"a\":{";
 	// test online status
 	var online_request = new XMLHttpRequest();
+	online_request.timeout = 3000;
 	online_request.onreadystatechange = function() {
 		if (online_request.readyState == 4 && online_request.status == 200) {
 			getregionweather(a, b);
-		} else if (online_request.status >= 400) {
-			window.apijson = "<offline>";
-			displayweather(false);
+		} else if (online_request.readyState == 4 && online_request.status >= 400) {
+			displayweather(true);
 		}
 	};
-	online_request.onerror = function() {
-		window.apijson = "<offline>";
-		displayweather(false);
+	online_request.onerror = online_request.ontimeout = function() {
+		displayweather(true);
 	}
 	online_request.open("HEAD", "https://cors-anywhere.herokuapp.com/https://example.com");
 	// header required for CORS-anywhere, but IE does not set it automatically

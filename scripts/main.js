@@ -16,7 +16,8 @@ function init() {
 	window.bloc = window.bloc == null ? "London" : bloc;
 	document.getElementById("alocinput").value = aloc;
 	document.getElementById("blocinput").value = bloc;
-	window.apijson = "";
+	// non-empty string to avoid location not found trigger, inform first time
+	window.apijson = "init";
 	// (21 + 1) % 22 == 0, this will start at 0 when main is executed
 	window.fctime = 21;
 	window.fc = { 'a': new Array(5), 'b': new Array(5) };

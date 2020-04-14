@@ -1,5 +1,6 @@
 # Timezone Clock
-Timezone Clock is a website setup for dual timezone clock with weather informations.
+Timezone Clock is a website setup for dual timezone clock with weather informations compatible 
+with legacy browsers.
 > **Please run setup.sh once with no appid before distributing to protect your appid**
 
 #### Screenshots
@@ -14,8 +15,7 @@ Timezone Clock is a website setup for dual timezone clock with weather informati
 ### Setup
 The website can be hosted on a PHP server (detects .html and .php as PHP files) or used on client side (private use only as there is no appid protection), it is compatible and will auto detect how it is used.
 However, there is no rate limit on client side, request limit imposed by OpenWeatherMap may be
-exceeded and causes error, but as long as you limit the times you refresh or change location, client side will be fine.  
-> Hosting locally with a PHP server is encouraged where possible due to above reasons.
+exceeded and causes error, but as long as you limit the times you refresh or change location, client side will be fine.
 
 Use *setup.sh* to setup. **For Bash and Apache on Linux.**
 > Modification will be needed for other shells, server hosting programs or operating systems.
