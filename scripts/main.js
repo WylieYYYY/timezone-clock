@@ -1,16 +1,14 @@
 "use strict";
 
 function init() {
-	// if it is used at client side, localStorage will not be available
+	// indicate correct error messages to show
 	window.hosted = true;
 	try {
 		window.aloc = localStorage.getItem("aloc");
 		window.bloc = localStorage.getItem("bloc");
 		document.getElementById("contrast").checked
 			= localStorage.getItem("contrast") == "true";
-	} catch (e) {
-		hosted = false;
-	}
+	} catch (e) {}
 	// fill with default values
 	window.aloc = window.aloc == null ? "Hong Kong" : aloc;
 	window.bloc = window.bloc == null ? "London" : bloc;

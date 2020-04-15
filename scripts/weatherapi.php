@@ -41,12 +41,12 @@ function changeweather() {
 	// update values and save to local storage if hosted
 	window.aloc = document.getElementById("alocinput").value;
 	window.bloc = document.getElementById("blocinput").value;
-	if (hosted) {
+	try {
 		localStorage.setItem("aloc", aloc);
 		localStorage.setItem("bloc", bloc);
 		localStorage.setItem("contrast", document.getElementById("contrast")
 			.checked.toString());
-	}
+	} catch (e) {}
 	// set second to nothing, triggers main function to sync time with apijson
 	document.getElementById("s").textContent = "";
 	refreshweather(true);

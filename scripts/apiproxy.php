@@ -2,6 +2,7 @@
 "use strict";
 
 function getweather(a, b) {
+	window.hosted = false;
 	window.received = 0;
 	// array to contain all requests
 	window.request = {};
@@ -82,7 +83,10 @@ foreach (array('a', 'b') as $region) {
 	foreach ($all_req as $cache) {
 		if (explode('.', $cache)[0] + 630 < time()) unlink($cache);
 	}
-	$file_list = glob("*.".$_GET[$region].".json");
+	$clean_name = rawurlencode(mb_strtolower($_GET[$region], "UTF-8"));
+	$clean_name = str_replace("%2C", "%2C%20", $clean_name);
+	$clean_name = preg_replace("/(%20)+/", "%20", $clean_name);
+	$file_list = glob("*.".$clean_name.".json");
 	// maximum request reached and no JSON of the region exists, 1 file padding
 	if (count($all_req) >= 299 && count($file_list) == 0) {
 		// extract available regions and return the list
@@ -97,11 +101,11 @@ foreach (array('a', 'b') as $region) {
 	// for request to happen, it must be older than 10 minutes (600s)
 	// and no other requests are happening
 	if (explode('.', $json_name)[0] + 600 < time() && count($file_list) <= 1) {
-		$file_name = time().'.'.$_GET[$region].".json";
+		$file_name = time().'.'.$clean_name.".json";
 		$file_handle = fopen($file_name, "w+");
 		foreach (array("weather", "forecast") as $type) {
 			// get JSON from OpenWeatherMap
-			$response = file_get_contents($target_base.$type."?q=".$_GET[$region].$target_key);
+			$response = file_get_contents($target_base.$type."?q=".$clean_name.$target_key);
 			// if response failed, location does not exist
 			if (!$response) {
 				fclose($file_handle);
