@@ -31,7 +31,21 @@ function showlocpopup() {
 	show("locform");
 	show("locformblur");
 }
-function changeweather() {
+function changesetting() {
+	// default to CSS value when it is an empty string, empty URL for no background image
+	if (!document.getElementById("contrast").checked) document.body.style.backgroundImage = "";
+	else document.body.style.backgroundImage = "url()";
+	try {
+		localStorage.setItem("contrast", document.getElementById("contrast")
+			.checked.toString());
+	} catch (e) {}
+	// contrast change does not require request and does not need timeout
+	if (aloc == document.getElementById("alocinput").value &&
+		bloc == document.getElementById("blocinput").value) {
+		hide("locform");
+		hide("locformblur");
+		return;
+	}
 	// if previous request is not finished, it will be a timeout PID (positive integer)
 	if (timeoutpid != 0) {
 		document.getElementById("availtitle").innerHTML = "<br/>Please wait<br/>until last request<br/>is finished.";
@@ -44,8 +58,6 @@ function changeweather() {
 	try {
 		localStorage.setItem("aloc", aloc);
 		localStorage.setItem("bloc", bloc);
-		localStorage.setItem("contrast", document.getElementById("contrast")
-			.checked.toString());
 	} catch (e) {}
 	// set second to nothing, triggers main function to sync time with apijson
 	document.getElementById("s").textContent = "";
@@ -55,9 +67,6 @@ function changeweather() {
 }
 
 function refreshweather(loc_changed) {
-	// default to CSS value when it is an empty string, empty URL for no background image
-	if (!document.getElementById("contrast").checked) document.body.style.backgroundImage = "";
-	else document.body.style.backgroundImage = "url()";
 	window.timeoutpid = setTimeout(function() {
 		window.apijson = "<offline>";
 		displayweather();
@@ -71,7 +80,12 @@ function refreshweather(loc_changed) {
 		if (request.readyState == 4 && request.status == 200) {
 			// skip "// Server-client compatible code" indicator
 			var response = request.responseText.substring(32);
-			if (response == "<server_fault>") displayweather(true);
+			if (response == "<server_fault>" ||
+				document.getElementById("s").textContent != "" &&
+				response == "") {
+				// host or weather server offline
+				displayweather(true);
+			}
 			// else it may be empty or available locations
 			else {
 				window.apijson = response;
@@ -136,13 +150,13 @@ function displayweather(server_fault) {
 		});
 	} else {
 		// in a failed state, click off is assumed to be confirm
-		document.getElementById("locformblur").onclick = function() { changeweather(); };
+		document.getElementById("locformblur").onclick = function() { changesetting(); };
 		document.getElementById("loctitle").textContent = "Try Again";
 		// offline message timeout reached, retry every minute
 		if (apijson == "<offline>" || (server_fault && !hosted)) {
 			// can also be client offline on the first time
 			document.getElementById("availtitle").innerHTML = "<br/>Offline,<br/>check connection.";
-			setTimeout(changeweather, 60000);
+			setTimeout(changesetting, 60000);
 		} else if (apijson) {
 			// response is not JSON or <offline>, must be a list of available regions
 			document.getElementById("availtitle").innerHTML = "<br/>Server busy,<br/>currently available regions:";
