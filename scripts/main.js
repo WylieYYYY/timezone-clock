@@ -66,6 +66,8 @@ function main() {
 		// when server hosted, the browser must refresh everyday to ensure it is up-to-date
 		if (document.getElementById("atime").textContent == "00:00"
 			&& sec == 30 && hosted) {
+			// server may be down when refreshing, save apijson for restoration
+			try { sessionStorage.setItem("apijson", JSON.stringify(apijson)); } catch (e) {}
 			// refresh at 30th second to eliminate server side race condition
 			location.reload(true);
 		}

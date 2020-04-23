@@ -31,10 +31,29 @@ function showlocpopup() {
 	show("locform");
 	show("locformblur");
 }
-function changesetting() {
+
+function restorejson() {
+	try {
+		var savedjson = sessionStorage.getItem("apijson");
+		if (savedjson) {
+			// non-empty invisible control character that is higher than 59
+			document.getElementById("s").textContent = '\x7f';
+			window.apijson = savedjson;
+			// trigger display of old information, will be override by body onload
+			displayweather(false);
+			sessionStorage.removeItem("apijson");
+		}
+	} catch (e) {}
+}
+
+function applycontrast() {
 	// default to CSS value when it is an empty string, empty URL for no background image
 	if (!document.getElementById("contrast").checked) document.body.style.backgroundImage = "";
 	else document.body.style.backgroundImage = "url()";
+}
+
+function changesetting() {
+	applycontrast();
 	try {
 		localStorage.setItem("contrast", document.getElementById("contrast")
 			.checked.toString());
@@ -73,8 +92,8 @@ function refreshweather(loc_changed) {
 	}, 15000);
 	// Server-client compatible code<?php /*
 	getweather(aloc, bloc);/*/ echo "\n"?>
-	// if location changed, we must notify the user
-	if (loc_changed) window.apijson = "";
+	// if location changed, we must notify the user, exclude auto-refresh
+	if (loc_changed && document.getElementById("s").textContent != '\x7f') window.apijson = "";
 	var request = new XMLHttpRequest();
 	request.onreadystatechange = function() {
 		if (request.readyState == 4 && request.status == 200) {
