@@ -87,8 +87,11 @@ function changesetting() {
 
 function refreshweather(loc_changed) {
 	window.timeoutpid = setTimeout(function() {
-		window.apijson = "<offline>";
-		displayweather();
+		// server's fault if we know that it is displaying
+		if (document.getElementById("s").textContent == "") {
+			window.apijson = "<offline>";
+			displayweather(false);
+		} else displayweather(true);
 	}, 15000);
 	// Server-client compatible code<?php /*
 	getweather(aloc, bloc);/*/ echo "\n"?>
@@ -111,13 +114,17 @@ function refreshweather(loc_changed) {
 				displayweather(false);
 			}
 		} else if (request.readyState == 4 && request.status >= 400) {
-			window.apijson = "<offline>";
-			displayweather(false);
+			if (document.getElementById("s").textContent == "") {
+				window.apijson = "<offline>";
+				displayweather(false);
+			} else displayweather(true);
 		}
 	};
 	request.onerror = function() {
-		window.apijson = "<offline>";
-		displayweather(false);
+		if (document.getElementById("s").textContent == "") {
+				window.apijson = "<offline>";
+				displayweather(false);
+		} else displayweather(true);
 	};
 	// parameter r to force request instead of using cached file
 	request.open("GET", "scripts/apiproxy.php?a=" + aloc + "&b=" + bloc + "&r=" + moment().utc(), true);

@@ -1,6 +1,15 @@
 "use strict";
 
 function init() {
+	// add submit on enter
+	["alocinput", "blocinput"].forEach(function(id) {
+		document.getElementById(id).onkeyup = function(event) {
+			if (event.keyCode == 0x0d) {
+				event.preventDefault();
+				changesetting();
+			}
+		};
+	});
 	// indicate correct error messages to show
 	window.hosted = true;
 	try {
