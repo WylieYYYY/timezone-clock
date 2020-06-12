@@ -28,7 +28,8 @@ function getweather(a, b) {
 }
 function getregionweather(region, next) {
 	var target_base = "https://cors-anywhere.herokuapp.com/https://api.openweathermap.org/data/2.5/";
-	var target_key = "&units=metric&appid={{OPENWEATHERMAP_APPID}}";
+	// single quote for setup.sh
+	var target_key = '&units=metric&appid={{OPENWEATHERMAP_APPID}}';
 	[ "weather", "forecast" ].forEach(function(type) {
 		request[region + type] = new XMLHttpRequest();
 		request[region + type].onreadystatechange = function() { processraw(region, type, next); };
@@ -67,65 +68,70 @@ function processraw(region, type, next) {
 	}
 }/*/
 header('Content-Type: application/javascript');
-$target_base = "https://api.openweathermap.org/data/2.5/";
-$target_key = "&units=metric&appid={{OPENWEATHERMAP_APPID}}";
+$target_base = 'https://api.openweathermap.org/data/2.5/';
+$target_key = '&units=metric&appid={{OPENWEATHERMAP_APPID}}';
 // test online status
 ini_set('default_socket_timeout', 2);
-$response = file_get_contents("https://example.com");
+$response = file_get_contents('https://example.com');
 if (!$response) {
-	echo "<server_fault>";
+	echo '<server_fault>';
 	return;
 }
-foreach (array('a', 'b') as $region) {
-	$all_req = glob("*.json");
+try {
+	$db = new PDO('sqlite:apijson.sqlite3');
+	$db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 	// remove all JSON older than 10.5 minutes (630s)
 	// 30 seconds padding to protect against timer inaccuracy
-	foreach ($all_req as $cache) {
-		if (explode('.', $cache)[0] + 630 < time()) unlink($cache);
-	}
-	$clean_name = rawurlencode(mb_strtolower($_GET[$region], "UTF-8"));
-	$clean_name = str_replace("%2C", "%2C%20", $clean_name);
-	$clean_name = preg_replace("/(%20)+/", "%20", $clean_name);
-	$file_list = glob("*.".$clean_name.".json");
-	// maximum request reached and no JSON of the region exists, 1 file padding
-	if (count($all_req) >= 299 && count($file_list) == 0) {
-		// extract available regions and return the list
-		foreach ($all_req as $region_file) {
-			$avail_region[] = explode('.', $region_file)[1];
+	$db->prepare('DELETE FROM Response WHERE RequestTime<?;')->execute(array(time() - 630));
+
+	$query = $db->query('SELECT COUNT(*) FROM Response;');
+	$row_count = $query->fetch()[0];
+
+	foreach (array('a', 'b') as $region) {
+		$clean_name = rawurlencode(mb_strtolower($_GET[$region], 'UTF-8'));
+		$clean_name = str_replace('%2C', '%2C%20', $clean_name);
+		$clean_name = preg_replace('/(%20)+/', '%20', $clean_name);
+		$query = $db->prepare('SELECT * FROM Response WHERE Location=?;');
+		$query->execute(array($clean_name));
+		$json_list = $query->fetchAll();
+		// maximum request reached and no JSON of the region exists, 1 file padding
+		if ($row_count >= 299 && count($json_list) === 0) {
+			// extract available regions and return the list
+			$query = $db->prepare('SELECT Location FROM Response;');
+			echo implode('<br/>', $query->fetchAll());
+			return;
 		}
-		sort($avail_region);
-		echo implode("<br/>", $avail_region);
-		return;
-	}
-	$json_name = $file_list[0];
-	// for request to happen, it must be older than 10 minutes (600s)
-	// and no other requests are happening
-	if (explode('.', $json_name)[0] + 600 < time() && count($file_list) <= 1) {
-		$file_name = time().'.'.$clean_name.".json";
-		$file_handle = fopen($file_name, "w+");
-		foreach (array("weather", "forecast") as $type) {
-			// get JSON from OpenWeatherMap
-			$response = file_get_contents($target_base.$type."?q=".$clean_name.$target_key);
-			// if response failed, location does not exist
-			if (!$response) {
-				fclose($file_handle);
-				return;
+		if (count($json_list) === 0) {
+			$query = $db->prepare('INSERT INTO Response'.
+				'(Location, RequestTime, Json) VALUES (?, ?, \'\');');
+			$query->execute(array($clean_name, time()));
+		}
+		// for request to happen, it must be older than 10 minutes (600s)
+		// and no other requests are happening
+		if (count($json_list) === 0 || $json_list[0]['RequestTime'] + 600 < time()) {
+			$query = $db->prepare('UPDATE Response SET RequestTime=? WHERE Location=?;');
+			$query->execute(array(time(), $clean_name));
+			foreach (array('weather', 'forecast') as $type) {
+				// get JSON from OpenWeatherMap
+				$response = file_get_contents("$target_base$type?q=$clean_name$target_key");
+				// if response failed, location does not exist
+				if (!$response) { return; }
+				// add wrapping around JSON and add to array
+				$json_data_arr[] = '"'.$type.'":'.$response;
 			}
-			// add wrapping around JSON and add to array
-			$json_data_arr[] = '"'.$type."\":".$response;
+			$query = $db->prepare('UPDATE Response SET Json=? WHERE Location=?;');
+			$query->execute(array('{'.implode(',', $json_data_arr).'}', $clean_name));
 		}
-		fwrite($file_handle, '{'.implode(',', $json_data_arr).'}');
-		fclose($file_handle);
-		// if there are old JSON, remove them (between 10 minutes and 10.5 minutes)
-		if (count($file_list) > 0) { unlink($json_name); }
-		$json_name = $file_name;
+		// json_name will be the old JSON when the block above is not executed
+		$query = $db->prepare('SELECT Json FROM Response WHERE Location=?;');
+		$query->execute(array($clean_name));
+		$region_data = $query->fetch()[0];
+		// region is proven invalid before
+		if ($region_data == '') { return; }
+		// read and encase in ab wrapper
+		$region_data_arr[] = '"'.$region.'":'.$region_data;
 	}
-	// json_name will be the old JSON when the block above is not executed
-	$region_data = file_get_contents($json_name);
-	// region is proven invalid before
-	if ($region_data == "") return;
-	// read and encase in ab wrapper
-	$region_data_arr[] = '"'.$region."\":".$region_data;
-}
-// wrap all around JSON
-echo '{'.implode(',', $region_data_arr).'}';//*/
+	// wrap all around JSON
+	echo '{'.implode(',', $region_data_arr).'}';
+} catch(PDOException $e) { echo '<server_fault>'; }//*/
