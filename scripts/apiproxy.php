@@ -99,7 +99,7 @@ try {
 		if ($row_count >= 299 && count($json_list) === 0) {
 			// extract available regions and return the list
 			$query = $db->prepare('SELECT Location FROM Response;');
-			echo implode('<br/>', $query->fetchAll());
+			echo rawurldecode(implode('<br/>', $query->fetchAll()));
 			return;
 		}
 		if (count($json_list) === 0) {
@@ -123,7 +123,7 @@ try {
 			$query = $db->prepare('UPDATE Response SET Json=? WHERE Location=?;');
 			$query->execute(array('{'.implode(',', $json_data_arr).'}', $clean_name));
 		}
-		// json_name will be the old JSON when the block above is not executed
+		// old JSON will be fetched when the block above is not executed
 		$query = $db->prepare('SELECT Json FROM Response WHERE Location=?;');
 		$query->execute(array($clean_name));
 		$region_data = $query->fetch()[0];

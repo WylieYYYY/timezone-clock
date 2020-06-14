@@ -151,9 +151,10 @@ function displayweather(server_fault) {
 			var templow = Math.round(apijson[region]["weather"]["main"]["temp_min"]).toString();
 			var temphi = Math.round(apijson[region]["weather"]["main"]["temp_max"]).toString();
 			// pad each side, remove one side if equal
-			document.getElementById(region + "hilow").textContent = templow +
-				(templow == temphi ? (templow.length < 2 ? '\xa0' : '') :
+			window.suppinfo[region][0] = templow + (templow == temphi ? (templow.length < 2 ? '\xa0' : '') :
 				(templow.length < 2 ? '\xa0' : '') + '/' + (temphi.length < 2 ? '\xa0' : '') + temphi) + "\xb0\x43";
+			window.suppinfo[region][1] = "\xa0\xa0\xa0" +
+				apijson[region]["weather"]["main"]["humidity"] + '\xa0%';
 			// round timezone by 3 hour interval (10800s), offset to 9AM (32400s)
 			var roughtz = Math.round(apijson[region]["weather"]["timezone"] / 10800) * 10800 - 32400;
 			// skip entries until next epoch day (86400s) in the entry thus next 9AM in the timezone

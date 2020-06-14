@@ -25,6 +25,7 @@ function init() {
 	document.getElementById("blocinput").value = bloc;
 	// non-empty string to avoid location not found trigger, inform first time
 	window.apijson = "init";
+	window.suppinfo = { 'a': new Array(2), 'b': new Array(2) };
 	// (21 + 1) % 22 == 0, this will start at 0 when main is executed
 	window.fctime = 21;
 	window.fc = { 'a': new Array(5), 'b': new Array(5) };
@@ -53,6 +54,9 @@ function main() {
 		fctime = (fctime + 1) % 22;
 		// change forecast location every 11 seconds
 		if (fctime % 11 == 0) {
+			[ 'a', 'b' ].forEach(function(region) {
+				document.getElementById(region + "suppinfo").textContent = suppinfo[region][fctime / 11];
+			});
 			var loc = "ab"[fctime / 11];
 			document.getElementById("fc").style.color = loc == 'a' ? "orange" : "aquamarine";
 			// assuming that there are 5 entries
