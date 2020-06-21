@@ -11,7 +11,7 @@
 		<link rel="stylesheet" type="text/css" href="styles/styles.css"/>
 		<script>
 			window.onerror = function(error) {
-				document.getElementById("err").textContent = "Error! " + error;
+				document.getElementById("err").textContent = "[ERROR] " + error;
 				[].forEach.call(document.getElementsByClassName("jshide"), function(item) {
 					item.style.display = "none";
 				});
@@ -28,66 +28,58 @@
 		<span id="err" class="warn"></span>
 		<noscript class="warn">This website requires javascript to work!</noscript>
 		<div id="locformblur" class="popupblur" style="cursor: pointer" onclick="hide('locform'); hide('locformblur')"></div>
-		<table id="leftpanel" class="jshide" style="white-space: nowrap">
-			<tr>
-				<td style="color: orange">
-					<h1 id="adate" onclick="showlocpopup()" style="cursor: pointer"></h1>
-					<p class="split60" style="font-size: 600%; cursor: default">
-						<span id="atime">Loading</span><span style="font-size: 60%">.<span id="s"></span></span>
-					</p>
-					<div id="ainfo" style="width: 32%; display: none">
-						<p id="aweather" class="split60" style="font-size: 600%; margin: 5% 5% 0 0"></p>
-						<div class="split40" style="margin-top: 10%; float: right; cursor: default">
-							<div id="atemp" style="font-size: 300%; float: right"></div>
-							<div id="asuppinfo" style="font-size: 150%; float: right"></div>
-						</div>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td style="color: aquamarine">
-					<h1 id="bdate" onclick="showlocpopup()" style="cursor: pointer"></h1>
-					<p class="split60" style="font-size: 600%; cursor: default">
-						<span id="btime"></span><span style="font-size: 60%">&nbsp;&nbsp;&nbsp;</span>
-					</p>
-					<div id="binfo" style="width: 32%; display: none">
-						<p id="bweather" class="split60" style="font-size: 600%; margin: 5% 5% 0 0"></p>
-						<div class="split40" style="margin-top: 10%; float: right; cursor: default">
-							<div id="btemp" style="font-size: 300%; float: right"></div>
-							<div id="bsuppinfo" style="font-size: 150%; float: right"></div>
-						</div>
-					</div>
-				</td>
-			</tr>
-			<tr id="fc" style="display: none; cursor: default">
-				<td>
-					<div style="width: 100%; font-size: 20%; background-color: grey">
-						<div id="fctime" style="background-color: lawngreen">&nbsp;</div>
-					</div>
-					<table style="width: 100%; border-spacing: 10px 0">
-						<tr valign="top">
-							<th id="fcdate0" style="font-size: 150%"></th>
-							<th style="font-size: 500%"><div id="fc0"></div></th>
-							<th id="fcdate1" style="font-size: 150%"></th>
-							<th style="font-size: 500%"><div id="fc1"></div></th>
-							<th id="fcdate2" style="font-size: 150%"></th>
-							<th style="font-size: 500%"><div id="fc2"></div></th>
-							<th id="fcdate3" style="font-size: 150%"></th>
-							<th style="font-size: 500%"><div id="fc3"></div></th>
-							<th id="fcdate4" style="font-size: 150%"></th>
-							<th style="font-size: 500%"><div id="fc4"></div></th>
-						</tr>
-						<tr style="font-size: 150%" align="center">
-							<td></td><td id="fchilow0"></td>
-							<td></td><td id="fchilow1"></td>
-							<td></td><td id="fchilow2"></td>
-							<td></td><td id="fchilow3"></td>
-							<td></td><td id="fchilow4"></td>
-						</tr>
-					</table>
-				</td>
-			</tr>
-		</table>
+		<div class="jshide" style="white-space: nowrap; color: orange">
+			<h1 id="adate" onclick="showlocpopup()" style="cursor: pointer"></h1>
+			<p class="split60" style="font-size: 600%; cursor: default">
+				<span id="atime">Loading</span><span style="font-size: 60%">.<span id="s"></span></span>
+			</p>
+			<div id="ainfo" style="width: 32%; display: none">
+				<p id="aweather" class="split60" style="font-size: 600%; margin: 5% 5% 0 0"></p>
+				<div class="split40" style="margin-top: 10%; float: right; cursor: default">
+					<div id="atemp" style="font-size: 300%; float: right"></div>
+					<div id="asuppinfo" style="font-size: 150%; float: right"></div>
+				</div>
+			</div>
+		</div>
+		<div class="jshide" style="white-space: nowrap; color: aquamarine">
+			<h1 id="bdate" onclick="showlocpopup()" style="cursor: pointer"></h1>
+			<p class="split60" style="font-size: 600%; cursor: default">
+				<span id="btime"></span><span style="font-size: 60%">&nbsp;&nbsp;&nbsp;</span>
+			</p>
+			<div id="binfo" style="width: 32%; display: none">
+				<p id="bweather" class="split60" style="font-size: 600%; margin: 5% 5% 0 0"></p>
+				<div class="split40" style="margin-top: 10%; float: right; cursor: default">
+					<div id="btemp" style="font-size: 300%; float: right"></div>
+					<div id="bsuppinfo" style="font-size: 150%; float: right"></div>
+				</div>
+			</div>
+		</div>
+		<div id="fc" style="display: none; cursor: default">
+			<div style="width: 100%; font-size: 20%; background-color: grey">
+				<div id="fctime" style="background-color: lawngreen">&nbsp;</div>
+			</div>
+			<table style="width: 100%; border-spacing: 10px 0">
+				<tr valign="top">
+					<th id="fcdate0" style="font-size: 150%"></th>
+					<th style="font-size: 500%"><div id="fc0"></div></th>
+					<th id="fcdate1" style="font-size: 150%"></th>
+					<th style="font-size: 500%"><div id="fc1"></div></th>
+					<th id="fcdate2" style="font-size: 150%"></th>
+					<th style="font-size: 500%"><div id="fc2"></div></th>
+					<th id="fcdate3" style="font-size: 150%"></th>
+					<th style="font-size: 500%"><div id="fc3"></div></th>
+					<th id="fcdate4" style="font-size: 150%"></th>
+					<th style="font-size: 500%"><div id="fc4"></div></th>
+				</tr>
+				<tr style="font-size: 150%" align="center">
+					<td></td><td id="fchilow0"></td>
+					<td></td><td id="fchilow1"></td>
+					<td></td><td id="fchilow2"></td>
+					<td></td><td id="fchilow3"></td>
+					<td></td><td id="fchilow4"></td>
+				</tr>
+			</table>
+		</div>
 		<div id="locform" style="display: none; position: absolute; left: 20px; top: 20px">
 			<form style="border: medium solid grey; border-radius: 10px; font-size: 150%" class="background">
 				<h2 id="loctitle" class="padded" style="color: lawngreen; cursor: default">Change Location</h2>
