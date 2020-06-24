@@ -33,9 +33,9 @@ function init() {
 	window.fchilow = { 'a': new Array(5), 'b': new Array(5) };
 	window.timeoutpid = 0;
 	
-	[].forEach.call(document.getElementsByClassName("jshide"), function(element) {
-		element.style.display = "block";
-	});
+	var clockelement = document.getElementById("mainclock")
+	clockelement.style.width = document.getElementById("atime").getBoundingClientRect().width * 2 + "px";
+	clockelement.style.display = "block";
 }
 
 function hide(id) { document.getElementById(id).style.display = "none"; }

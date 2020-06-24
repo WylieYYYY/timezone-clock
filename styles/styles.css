@@ -1,15 +1,8 @@
-.jshide { display: none; }
-.highlight {
-	font-weight: bold;
-	font-style: italic;
-}
-.split40 { width: 40%; }
-.split60 { width: 60%; }
 .warn {
 	font-size: 200%;
 	color: yellow;
 }
-.padded { margin: 10px; }
+form * { margin: 10px; }
 .popupblur {
 	display: none;
 	position: absolute;
@@ -20,11 +13,14 @@
 	background-color: grey;
 	opacity: 0.5;
 }
-body, .background {
+body, form {
 	/* Background pattern from Toptal Subtle Patterns */
 	background-image: url("images/prism.png");
 	background-color: black;
 	font-family: Share Tech Mono;
 }
-div, p { float: left; }
-h1, h2, h3, h4, h5, h6, i, p { margin: 0 0 0 0; }
+div, p {
+	float: left;
+	width: 100%;
+}
+h1, p, div { margin: 0 0 0 0; }

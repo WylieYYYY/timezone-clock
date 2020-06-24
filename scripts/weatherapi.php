@@ -146,15 +146,13 @@ function displayweather(server_fault) {
 				+ apijson[region]["weather"]["weather"][0]["id"] + (daytime ? "-d" : "-n"));
 			var tempstr = Math.round(apijson[region]["weather"]["main"]["temp"]).toString();
 			// pad temperature string but keep it centered
-			document.getElementById(region + "temp").textContent = '\xa0' + (tempstr.length < 3 ? '\xa0' : '') + tempstr
-				+ (tempstr.length < 2 ? '\xa0' : '') + "\xb0\x43";
+			document.getElementById(region + "temp").textContent = tempstr + (tempstr.length < 2 ? '\xa0' : '') + "\xb0\x43";
 			var templow = Math.round(apijson[region]["weather"]["main"]["temp_min"]).toString();
 			var temphi = Math.round(apijson[region]["weather"]["main"]["temp_max"]).toString();
 			// pad each side, remove one side if equal
 			window.suppinfo[region][0] = templow + (templow == temphi ? (templow.length < 2 ? '\xa0' : '') :
 				(templow.length < 2 ? '\xa0' : '') + '/' + (temphi.length < 2 ? '\xa0' : '') + temphi) + "\xb0\x43";
-			window.suppinfo[region][1] = "\xa0\xa0\xa0" +
-				apijson[region]["weather"]["main"]["humidity"] + '\xa0%';
+			window.suppinfo[region][1] = apijson[region]["weather"]["main"]["humidity"] + "\xa0%";
 			// round timezone by 3 hour interval (10800s), offset to 9AM (32400s)
 			var roughtz = Math.round(apijson[region]["weather"]["timezone"] / 10800) * 10800 - 32400;
 			// skip entries until next epoch day (86400s) in the entry thus next 9AM in the timezone
@@ -173,7 +171,7 @@ function displayweather(server_fault) {
 		// is JSON object, server/client has no connection to Internet and not first time
 		document.getElementById("fctime").style.backgroundColor = "yellow";
 		[ 'a', 'b' ].forEach(function(region) {
-			document.getElementById(region + "temp").textContent = "\xa0\xa0--\xb0\x43";
+			document.getElementById(region + "temp").textContent = "--\xb0\x43";
 		});
 	} else {
 		// in a failed state, click off is assumed to be confirm

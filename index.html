@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en-GB">
 	<head>
-		<meta charset="utf-8">
-		<meta name="theme-color" content="#353535">
+		<meta charset="utf-8"/>
+		<meta name="theme-color" content="#353535"/>
 		<title>Timezone Clock</title>
-		<link rel="manifest" href="manifest.json">
+		<link rel="manifest" href="manifest.json"/>
 		<link rel="shortcut icon" type="image/png" href="styles/images/favicon.png"/>
 		<link rel="stylesheet" type="text/css" href="styles/fonts/owfont.css"/>
 		<link rel="stylesheet" type="text/css" href="styles/fonts/share-tech-mono.css"/>
@@ -12,12 +12,10 @@
 		<script>
 			window.onerror = function(error) {
 				document.getElementById("err").textContent = "[ERROR] " + error;
-				[].forEach.call(document.getElementsByClassName("jshide"), function(item) {
-					item.style.display = "none";
-				});
+				document.getElementById("mainclock").style.display = "none";
 			};
 		</script>
-		<!-- Server-client compatible code<?php /*-->
+		<!-- Server-client compatible code <?php /*-->
 		<script src="scripts/apiproxy.php"></script>
 		<!--*/?>-->
 		<script src="scripts/moment.min.js"></script>
@@ -27,72 +25,74 @@
 	<body onload="init();applycontrast();restorejson();refreshweather(true);main();settextbutton()">
 		<span id="err" class="warn"></span>
 		<noscript class="warn">This website requires javascript to work!</noscript>
-		<div id="locformblur" class="popupblur" style="cursor: pointer" onclick="hide('locform'); hide('locformblur')"></div>
-		<div class="jshide" style="white-space: nowrap; color: orange">
-			<h1 id="adate" onclick="showlocpopup()" style="cursor: pointer"></h1>
-			<p class="split60" style="font-size: 600%; cursor: default">
-				<span id="atime">Loading</span><span style="font-size: 60%">.<span id="s"></span></span>
-			</p>
-			<div id="ainfo" style="width: 32%; display: none">
-				<p id="aweather" class="split60" style="font-size: 600%; margin: 5% 5% 0 0"></p>
-				<div class="split40" style="margin-top: 10%; float: right; cursor: default">
-					<div id="atemp" style="font-size: 300%; float: right"></div>
-					<div id="asuppinfo" style="font-size: 150%; float: right"></div>
+		<div id="locformblur" class="popupblur" style="cursor: pointer" onclick="hide('locform');hide('locformblur')"></div>
+		<div id="mainclock">
+			<div style="white-space: nowrap; color: orange">
+				<h1 id="adate" onclick="showlocpopup()" style="cursor: pointer"></h1>
+				<p style="width: 60%; font-size: 700%; cursor: default">
+					<span id="atime">Loading</span><span style="font-size: 60%">.<span id="s"></span></span>
+				</p>
+				<div id="ainfo" style="display: none; width: 40%">
+					<span id="aweather" style="font-size: 600%; margin-left: 10%"></span>
+					<span style="margin-top: 2%; float: right; cursor: default">
+						<div id="atemp" style="font-size: 300%; float: right; text-align: right"></div>
+						<div id="asuppinfo" style="font-size: 150%; float: right; text-align: right"></div>
+					</span>
 				</div>
 			</div>
-		</div>
-		<div class="jshide" style="white-space: nowrap; color: aquamarine">
-			<h1 id="bdate" onclick="showlocpopup()" style="cursor: pointer"></h1>
-			<p class="split60" style="font-size: 600%; cursor: default">
-				<span id="btime"></span><span style="font-size: 60%">&nbsp;&nbsp;&nbsp;</span>
-			</p>
-			<div id="binfo" style="width: 32%; display: none">
-				<p id="bweather" class="split60" style="font-size: 600%; margin: 5% 5% 0 0"></p>
-				<div class="split40" style="margin-top: 10%; float: right; cursor: default">
-					<div id="btemp" style="font-size: 300%; float: right"></div>
-					<div id="bsuppinfo" style="font-size: 150%; float: right"></div>
+			<div style="white-space: nowrap; color: aquamarine">
+				<h1 id="bdate" onclick="showlocpopup()" style="cursor: pointer"></h1>
+				<p style="width: 60%; font-size: 700%; cursor: default">
+					<span id="btime"></span>
+				</p>
+				<div id="binfo" style="display: none; width: 40%">
+					<span id="bweather" style="font-size: 600%; margin-left: 10%"></span>
+					<span style="margin-top: 2%; float: right; cursor: default">
+						<div id="btemp" style="font-size: 300%; float: right; text-align: right"></div>
+						<div id="bsuppinfo" style="font-size: 150%; float: right; text-align: right"></div>
+					</span>
 				</div>
 			</div>
-		</div>
-		<div id="fc" style="display: none; cursor: default">
-			<div style="width: 100%; font-size: 20%; background-color: grey">
-				<div id="fctime" style="background-color: lawngreen">&nbsp;</div>
+			<div id="fc" style="display: none; cursor: default">
+				<div style="width: 100%; font-size: 20%; background-color: grey">
+					<div id="fctime" style="background-color: lawngreen">&nbsp;</div>
+				</div>
+				<table style="width: 100%; border-spacing: 10px 0">
+					<tr valign="top">
+						<th id="fcdate0" style="font-size: 150%"></th>
+						<th style="font-size: 500%"><div id="fc0"></div></th>
+						<th id="fcdate1" style="font-size: 150%"></th>
+						<th style="font-size: 500%"><div id="fc1"></div></th>
+						<th id="fcdate2" style="font-size: 150%"></th>
+						<th style="font-size: 500%"><div id="fc2"></div></th>
+						<th id="fcdate3" style="font-size: 150%"></th>
+						<th style="font-size: 500%"><div id="fc3"></div></th>
+						<th id="fcdate4" style="font-size: 150%"></th>
+						<th style="font-size: 500%"><div id="fc4"></div></th>
+					</tr>
+					<tr style="font-size: 150%" align="center">
+						<td></td><td id="fchilow0"></td>
+						<td></td><td id="fchilow1"></td>
+						<td></td><td id="fchilow2"></td>
+						<td></td><td id="fchilow3"></td>
+						<td></td><td id="fchilow4"></td>
+					</tr>
+				</table>
 			</div>
-			<table style="width: 100%; border-spacing: 10px 0">
-				<tr valign="top">
-					<th id="fcdate0" style="font-size: 150%"></th>
-					<th style="font-size: 500%"><div id="fc0"></div></th>
-					<th id="fcdate1" style="font-size: 150%"></th>
-					<th style="font-size: 500%"><div id="fc1"></div></th>
-					<th id="fcdate2" style="font-size: 150%"></th>
-					<th style="font-size: 500%"><div id="fc2"></div></th>
-					<th id="fcdate3" style="font-size: 150%"></th>
-					<th style="font-size: 500%"><div id="fc3"></div></th>
-					<th id="fcdate4" style="font-size: 150%"></th>
-					<th style="font-size: 500%"><div id="fc4"></div></th>
-				</tr>
-				<tr style="font-size: 150%" align="center">
-					<td></td><td id="fchilow0"></td>
-					<td></td><td id="fchilow1"></td>
-					<td></td><td id="fchilow2"></td>
-					<td></td><td id="fchilow3"></td>
-					<td></td><td id="fchilow4"></td>
-				</tr>
-			</table>
 		</div>
-		<div id="locform" style="display: none; position: absolute; left: 20px; top: 20px">
-			<form style="border: medium solid grey; border-radius: 10px; font-size: 150%" class="background">
-				<h2 id="loctitle" class="padded" style="color: lawngreen; cursor: default">Change Location</h2>
-				<label class="padded" style="color: orange">&nbsp;&nbsp;Top&nbsp; location:</label>
-				<input id="alocinput" type="text" class="padded"><br/>
-				<label class="padded" style="color: aquamarine">Bottom location:</label>
-				<input id="blocinput" type="text" class="padded"><br/>
-				<label class="padded" style="color: yellow">&nbsp;High&nbsp; Contrast:</label>
-				<input id="contrast" type="checkbox" class="padded"><br/>
-				<button type="button" onclick="changesetting()" class="padded">Submit</button>
+		<span id="locform" style="display: none; position: absolute; left: 20px; top: 20px">
+			<form style="border: medium solid grey; border-radius: 10px; font-size: 150%">
+				<h2 id="loctitle" style="color: lawngreen; cursor: default">Change Location</h2>
+				<label style="color: orange">&nbsp;&nbsp;Top&nbsp; location:</label>
+				<input id="alocinput" type="text"><br/>
+				<label style="color: aquamarine">Bottom location:</label>
+				<input id="blocinput" type="text"><br/>
+				<label style="color: yellow">&nbsp;High&nbsp; Contrast:</label>
+				<input id="contrast" type="checkbox"><br/>
+				<button type="button" onclick="changesetting()">Submit</button>
 				<label id="availtitle" style="display: none; color: white"></label>
-				<p id="availloc" style="display: none; height: 100px; width: 100%; font-size: 80%; color: white; overflow: auto"></p>
+				<p id="availloc" style="display: none; font-size: 80%; color: white; overflow: auto"></p>
 			</form>
-		</div>
+		</span>
 	</body>
 </html>
