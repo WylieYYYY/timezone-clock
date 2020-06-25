@@ -3,6 +3,7 @@
 	color: yellow;
 }
 form * { margin: 10px; }
+.owf { transform: none; }
 .popupblur {
 	display: none;
 	position: absolute;
