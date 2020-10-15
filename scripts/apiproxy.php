@@ -72,7 +72,11 @@ $target_base = 'https://api.openweathermap.org/data/2.5/';
 $target_key = '&units=metric&appid={{OPENWEATHERMAP_APPID}}';
 // test online status
 ini_set('default_socket_timeout', 2);
-$response = file_get_contents('https://example.com');
+$curl = curl_init();
+curl_setopt($curl, CURLOPT_URL, 'https://example.com');
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+$response = curl_exec($curl);
+curl_close($curl);
 if (!$response) {
 	echo '<server_fault>';
 	return;
