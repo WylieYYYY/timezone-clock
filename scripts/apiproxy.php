@@ -114,7 +114,11 @@ try {
 			$query->execute(array(time(), $clean_name));
 			foreach (array('weather', 'forecast') as $type) {
 				// get JSON from OpenWeatherMap
-				$response = file_get_contents("$target_base$type?q=$clean_name$target_key");
+				$curl = curl_init();
+				curl_setopt($curl, CURLOPT_URL, "$target_base$type?q=$clean_name$target_key");
+				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+				$response = curl_exec($curl);
+				curl_close($curl);
 				// if response failed, location does not exist
 				if (!$response) { return; }
 				// add wrapping around JSON and add to array
