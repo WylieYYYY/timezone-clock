@@ -2,10 +2,11 @@
 repos_dir="$(dirname "$(readlink -f "$0")")"
 httpd_group="$(awk '/Group / { print $2 }' /etc/httpd/conf/httpd.conf)"
 read -srp 'OpenWeatherMap application ID (Entered string will not be visible): ' appid
-[ -z "$appid" ] && appid='{{OPENWEATHERMAP_APPID}}'
+[ -z "$appid" ] && appid='${OPENWEATHERMAP_APPID}'
 echo
-sed -i "s/target_key = '&units=metric&appid=.*';/target_key = '\&units=metric\&appid={{OPENWEATHERMAP_APPID}}';/g" "$repos_dir/scripts/apiproxy.php"
-sed -i "s/{{OPENWEATHERMAP_APPID}}/$appid/g" "$repos_dir/scripts/apiproxy.php"
+sed -i "s/target_key = '&units=metric&appid=.*';/target_key = '\&units=metric\&appid=\${OPENWEATHERMAP_APPID}';/g" "$repos_dir/scripts/apiproxy.php"
+sed -i "s/target_key = \`&units=metric&appid=.*\`;/target_key = \`\&units=metric\&appid=\${OPENWEATHERMAP_APPID}\`;/g" "$repos_dir/scripts/apiproxy.php"
+sed -i "s/\${OPENWEATHERMAP_APPID}/$appid/g" "$repos_dir/scripts/apiproxy.php"
 rm -f 'scripts/apijson.sqlite3'
 cat <<EOS | sqlite3 'scripts/apijson.sqlite3'
 CREATE TABLE Response(

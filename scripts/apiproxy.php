@@ -29,7 +29,7 @@ function getweather(a, b) {
 function getregionweather(region, next) {
 	var target_base = "https://cors-anywhere.herokuapp.com/https://api.openweathermap.org/data/2.5/";
 	// single quote for setup.sh
-	var target_key = '&units=metric&appid={{OPENWEATHERMAP_APPID}}';
+	var target_key = `&units=metric&appid=${OPENWEATHERMAP_APPID}`;
 	[ "weather", "forecast" ].forEach(function(type) {
 		request[region + type] = new XMLHttpRequest();
 		request[region + type].onreadystatechange = function() { processraw(region, type, next); };
@@ -69,7 +69,7 @@ function processraw(region, type, next) {
 }/*/
 header('Content-Type: application/javascript');
 $target_base = 'https://api.openweathermap.org/data/2.5/';
-$target_key = '&units=metric&appid={{OPENWEATHERMAP_APPID}}';
+$target_key = '&units=metric&appid=${OPENWEATHERMAP_APPID}';
 // test online status
 ini_set('default_socket_timeout', 2);
 $curl = curl_init();
