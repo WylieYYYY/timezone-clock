@@ -6,6 +6,7 @@ stages:
 pages:
     stage: build
     script:
+        - apk add patch
         - patch index.html demopatch.diff
         - ls *.rej 2>/dev/null && exit 1 || echo No rejection.
         - mv index.html demo.html
