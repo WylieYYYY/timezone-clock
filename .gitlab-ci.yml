@@ -1,0 +1,18 @@
+image: alpine:latest
+
+stages:
+    - build
+
+pages:
+    stage: build
+    script:
+        - patch index.html demopatch.diff
+        - ls *.rej 2>/dev/null && exit 1 || echo No rejection.
+        - mv index.html demo.html
+        - sed -i 's/localStorage/sessionStorage/g' scripts/*
+        - cp -r *.html manifest.json LICENSE styles scripts public
+    artifacts:
+        paths:
+            - public
+    only:
+        - pages

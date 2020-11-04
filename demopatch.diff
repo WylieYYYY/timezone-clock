@@ -1,0 +1,30 @@
+*** index.html
+--- index.html
+***************
+*** 1 ****
+! 		<title>Timezone Clock</title>
+--- 1 ----
+! 		<title>Timezone Clock Demo</title>
+***************
+*** 2 ****
+--- 2,13 ----
++ 		<script>
++ 			function resetDemo() {
++ 				sessionStorage.removeItem('var://timezone-clock/appid');
++ 				sessionStorage.removeItem('aloc');
++ 				sessionStorage.removeItem('bloc');
++ 				sessionStorage.removeItem('contrast');
++ 				window.location.href = '.';
++ 			}
++ 			window.OPENWEATHERMAP_APPID =
++ 				sessionStorage.getItem('var://timezone-clock/appid');
++ 		</script>
+  	</head>
+***************
+*** 2,3 ****
+--- 2,6 ----
++ 		<button onclick="resetDemo()" style="position: fixed; right: .5em; bottom: 2em; z-index: 1000; padding: .5em; background-color: red;">
++ 			Reset demo
++ 		</button>
+  	</body>
+  </html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+	<head>
+		<meta charset="utf-8"/>
+		<meta name="theme-color" content="#353535"/>
+		<title>Timezone Clock Demo</title>
+		<link rel="manifest" href="manifest.json"/>
+		<link rel="shortcut icon" type="image/png" href="styles/images/favicon.png"/>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
+		<style>
+			a {
+				color: #20c997;
+			}
+			p {
+				margin-top: 1em;
+			}
+		</style>
+		<script>
+			function processkey() {
+				const key = document.getElementById('keyinput').value;
+				sessionStorage.setItem('var://timezone-clock/appid', key);
+				window.location.href = 'demo.html';
+			}
+		</script>
+	</head>
+	<body>
+		<div class="modal-backdrop"></div>
+		<div class="modal text-light" tabindex="-1" role="dialog"
+			aria-labelledby="modaltitle" aria-hidden="true" style="display: block;">
+			<form action="javascript:void(0);" onsubmit="processkey()" class="modal-dialog">
+				<div class="modal-content bg-dark">
+					<div class="modal-header">
+						<h5 class="modal-title">Enter an OpenWeatherMap API key</h5>
+            			<a href=".." class="close text-light">&times;</a>
+					</div>
+					<div class="modal-body">
+						<p>
+							You can register a free account at
+							<a href="https://openweathermap.org">openweathermap.org</a>
+							to try out <code>timezone-clock</code> here.
+						</p>
+						<label for="key">OpenWeatherMap API key:</label>
+						<input id="keyinput" name="key" type="password" pattern="[0-9a-f]*"
+							title="32 character lowercase hexadecimal API key" minlength="32"
+							maxlength="32" autocomplete="off" class="form-control" autofocus required>
+						<p>If you encounter error when starting the demo. Please check the following:</p>
+						<ul>
+							<li>You have a stable Internet connection.</li>
+							<li>The API key is activated after registration (up to 2 hours wait).</li>
+							<li>API key is entered correctly and the call limit is not exceeded.</li>
+							<li>The city entered is correct and exists in the OpenWeatherMap database.</li>
+						</ul>
+					</div>
+					<div class="modal-footer">
+						<input class="btn btn-primary" type="submit">
+					</div>
+				</div>
+			</form>
+		</div>
+	</body>
+</html>
