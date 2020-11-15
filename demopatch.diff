@@ -10,14 +10,14 @@
 --- 2,13 ----
 + 		<script>
 + 			function resetDemo() {
-+ 				sessionStorage.removeItem('var://timezone-clock/appid');
++ 				sessionStorage.removeItem('var:timezone-clock,appid');
 + 				sessionStorage.removeItem('aloc');
 + 				sessionStorage.removeItem('bloc');
 + 				sessionStorage.removeItem('contrast');
 + 				window.location.href = '.';
 + 			}
 + 			window.OPENWEATHERMAP_APPID =
-+ 				sessionStorage.getItem('var://timezone-clock/appid');
++ 				sessionStorage.getItem('var:timezone-clock,appid');
 + 		</script>
   	</head>
 ***************
