@@ -7,17 +7,15 @@
 ! 		<title>Timezone Clock Demo</title>
 ***************
 *** 2 ****
---- 2,13 ----
+--- 2,11 ----
++		<script src="ScopedStorage.js"></script>
 + 		<script>
++			window.scopedStorage = new ScopedStorage('timezone-clock');
 + 			function resetDemo() {
-+ 				sessionStorage.removeItem('var:timezone-clock,appid');
-+ 				sessionStorage.removeItem('aloc');
-+ 				sessionStorage.removeItem('bloc');
-+ 				sessionStorage.removeItem('contrast');
++ 				scopedStorage.clear();
 + 				window.location.href = '.';
 + 			}
-+ 			window.OPENWEATHERMAP_APPID =
-+ 				sessionStorage.getItem('var:timezone-clock,appid');
++ 			window.OPENWEATHERMAP_APPID = scopedStorage.getItem('appid');
 + 		</script>
   	</head>
 ***************

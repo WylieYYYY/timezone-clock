@@ -10,7 +10,7 @@ pages:
         - patch index.html demopatch.diff
         - ls *.rej 2>/dev/null && exit 1 || echo No rejection.
         - mv index.html demo.html
-        - sed -i 's/localStorage/sessionStorage/g' scripts/*
+        - sed -i 's/localStorage/scopedStorage/g' scripts/*
         - cp -r *.html manifest.json LICENSE styles scripts public
     artifacts:
         paths:
