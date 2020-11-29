@@ -8,7 +8,7 @@
 ***************
 *** 2 ****
 --- 2,11 ----
-+		<script src="ScopedStorage.js"></script>
++ 		<script src="ScopedStorage.js"></script>
 + 		<script>
 +			window.scopedStorage = new ScopedStorage('timezone-clock');
 + 			function resetDemo() {
@@ -17,7 +17,7 @@
 + 			}
 + 			window.OPENWEATHERMAP_APPID = scopedStorage.getItem('appid');
 + 		</script>
-  	</head>
+  		<script src="scripts/apiproxy.php"></script>
 ***************
 *** 2,3 ****
 --- 2,6 ----
