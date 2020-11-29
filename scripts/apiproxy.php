@@ -1,6 +1,11 @@
 // Server-client compatible code<?php /*
 "use strict";
 
+// in local client mode, not demo or hosted
+if (!window.OPENWEATHERMAP_APPID) {
+	window.OPENWEATHERMAP_APPID = window.prompt("Please enter OpenWeatherMap API key here:", "");
+}
+
 function getweather(a, b) {
 	window.hosted = false;
 	window.received = 0;
@@ -69,7 +74,7 @@ function processraw(region, type, next) {
 }/*/
 header('Content-Type: application/javascript');
 $target_base = 'https://api.openweathermap.org/data/2.5/';
-$target_key = '&units=metric&appid=${OPENWEATHERMAP_APPID}';
+$target_key = '&units=metric&appid='.parse_ini_file('php.ini')['OPENWEATHERMAP_APPID'];
 // test online status
 ini_set('default_socket_timeout', 2);
 $curl = curl_init();
