@@ -1,2 +1,5 @@
 scripts/apijson.sqlite3
 scripts/php.ini
+public/*
+!public/index.html
+!public/ScopedStorage.js
