@@ -1,6 +1,8 @@
 // Server-client compatible code<?php /*
 "use strict";
 
+var weather_api_base = "https://api.openweathermap.org/data/2.5/";
+
 // in local client mode, not demo or hosted
 if (!window.OPENWEATHERMAP_APPID) {
 	window.OPENWEATHERMAP_APPID = window.prompt("Please enter OpenWeatherMap API key here:", "");
@@ -17,22 +19,17 @@ function getweather(a, b) {
 	var online_request = new XMLHttpRequest();
 	online_request.timeout = 3000;
 	online_request.onreadystatechange = function() {
-		if (online_request.readyState == 4 && online_request.status == 200) {
-			getregionweather(a, b);
-		} else if (online_request.readyState == 4 && online_request.status >= 400) {
-			displayweather(true);
-		}
+		if (online_request.readyState != 4) return;
+		if (online_request.status == 401) getregionweather(a, b);
+		else displayweather(true);
 	};
 	online_request.onerror = online_request.ontimeout = function() {
 		displayweather(true);
 	}
-	online_request.open("HEAD", "https://cors-anywhere.herokuapp.com/https://example.com");
-	// header required for CORS-anywhere, but IE does not set it automatically
-	online_request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+	online_request.open("HEAD", weather_api_base);
 	online_request.send();
 }
 function getregionweather(region, next) {
-	var target_base = "https://cors-anywhere.herokuapp.com/https://api.openweathermap.org/data/2.5/";
 	// single quote for setup.sh
 	var target_key = `&units=metric&appid=${OPENWEATHERMAP_APPID}`;
 	[ "weather", "forecast" ].forEach(function(type) {
@@ -44,9 +41,7 @@ function getregionweather(region, next) {
 			window.apijson = "";
 			displayweather(false);
 		};
-		request[region + type].open("GET", target_base + type + "?q=" + region + target_key, true);
-		// header required for CORS-anywhere, but IE does not set it automatically
-		request[region + type].setRequestHeader("X-Requested-With", "XMLHttpRequest");
+		request[region + type].open("GET", weather_api_base + type + "?q=" + region + target_key, true);
 		request[region + type].send();
 	});
 }
